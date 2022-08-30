@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1047551253009",
+    "project_id": "chirpy-scaler",
+    "storage_bucket": "chirpy-scaler.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047551253009:android:04f7a1ba7b49975999afb0",
+        "android_client_info": {
+          "package_name": "tech.arnav.chirpy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047551253009-mgr2re9lb7soj066rjm57ijosom6acgn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxtHhBhDR7tn2Ls7V6EvgmwfCR6s1DLE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047551253009-mgr2re9lb7soj066rjm57ijosom6acgn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
