@@ -1,8 +1,11 @@
 package tech.arnav.chirpy
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -17,21 +20,36 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
         }
-
-        _binding.btnAdd.setOnClickListener {
-            val num1 = _binding.etNum1.text.toString().toInt()
-            val num2 = _binding.etNum2.text.toString().toInt()
-            val sum = num1 + num2
-            _binding.tvResult.text = sum.toString()
-        }
-
+        val signInLauncher =
+            registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res ->
+                if (res.resultCode == RESULT_OK) {
+                    Toast.makeText(this, "User signed in", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
+                }
+            }
 
         val auth = Firebase.auth
         if (auth.currentUser == null) {
-            Toast.makeText(this, "Not logged in", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Not logged in, starting login flow", Toast.LENGTH_SHORT).show()
+            signInLauncher.launch(
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(listOf(
+                        AuthUI.IdpConfig.EmailBuilder().build(),
+                        AuthUI.IdpConfig.PhoneBuilder().build(),
+                        AuthUI.IdpConfig.GoogleBuilder().build()
+                    ))
+                    .build()
+            )
         } else {
-            Toast.makeText(this, "User is logged in", Toast.LENGTH_SHORT).show()
+
+
+
         }
+
+
+
 
     }
 }
