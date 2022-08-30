@@ -8,11 +8,14 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import tech.arnav.chirpy.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var _binding: ActivityMainBinding
+    val auth = Firebase.auth
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-        val auth = Firebase.auth
         if (auth.currentUser == null) {
             Toast.makeText(this, "Not logged in, starting login flow", Toast.LENGTH_SHORT).show()
             signInLauncher.launch(
@@ -44,6 +46,25 @@ class MainActivity : AppCompatActivity() {
             )
         } else {
 
+
+            _binding.btnSend.setOnClickListener {
+                val message = _binding.etMessage.text.toString()
+
+                val post = hashMapOf(
+                    "message" to message,
+                    "sender" to auth.currentUser?.uid,
+                    "timestamp" to System.currentTimeMillis()
+                )
+
+                db.collection("posts")
+                    .add(post)
+                    .addOnSuccessListener { docRef ->
+                        Toast.makeText(this, "Post Saved", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener() { e ->
+                        Toast.makeText(this, "Failed to save post", Toast.LENGTH_SHORT).show()
+                    }
+            }
 
 
         }
